@@ -4,6 +4,11 @@ All notable changes to this project should be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-05-30
+
+- fixed the Vercel deployment blocker by inlining the Supabase session refresh logic directly inside `middleware.ts`
+- removed middleware dependence on local alias imports so the deployed Edge bundle stays compatible
+
 ## [0.2.0] - 2026-05-30
 
 - added a real product shell with top nav, welcome state, tutorial cards, and CSolutions framing

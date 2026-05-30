@@ -1,9 +1,9 @@
 # HANDOFF.md
 
-## Current State (v0.2.0 - 2026-05-30)
+## Current State (v0.2.1 - 2026-05-30)
 
 The repo has moved past the initial scaffold into a more complete private product shell. This
-`v0.2.0` release adds the app framing needed to use Social Vault like a real internal tool.
+`v0.2.1` patch keeps the `v0.2.0` product work intact and fixes the Vercel deployment blocker in middleware.
 
 Current implementation includes:
 
@@ -17,6 +17,7 @@ Current implementation includes:
 - platform-aware filtering, sorting, and icon treatment
 - seeded example posts and modal create/edit flow
 - repo-local AI skills and MCP script setup
+- edge-safe middleware that no longer depends on local alias imports for session refresh during deploy
 
 ## MVP Status
 
