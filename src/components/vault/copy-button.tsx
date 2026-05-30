@@ -6,9 +6,13 @@ import { Check, Copy } from "lucide-react";
 export function CopyButton({
   text,
   label = "Copy caption",
+  icon,
+  tone = "primary",
 }: {
   text: string;
   label?: string;
+  icon?: React.ReactNode;
+  tone?: "primary" | "default";
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -20,8 +24,12 @@ export function CopyButton({
   }
 
   return (
-    <button type="button" onClick={handleCopy} className="vault-action vault-action-primary">
-      {copied ? <Check size={16} /> : <Copy size={16} />}
+    <button
+      type="button"
+      onClick={handleCopy}
+      className={tone === "primary" ? "vault-action vault-action-primary" : "vault-action"}
+    >
+      {copied ? <Check size={16} /> : icon || <Copy size={16} />}
       <span>{copied ? "Copied" : label}</span>
     </button>
   );

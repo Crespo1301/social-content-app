@@ -28,3 +28,9 @@ export async function sendMagicLink(formData: FormData) {
 
   redirect("/login?sent=1");
 }
+
+export async function signOut() {
+  const supabase = await createSupabaseServerClient();
+  await supabase.auth.signOut();
+  redirect("/login?signedOut=1");
+}

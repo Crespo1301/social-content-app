@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { SocialPost, SocialPostInput } from "@/lib/types";
+import { socialPostInputSchema } from "@/lib/validators";
 
 export async function POST(request: Request) {
   const supabase = await createSupabaseServerClient();
@@ -12,7 +13,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await request.json()) as SocialPostInput;
+  const parsed = socialPostInputSchema.safeParse((await request.json()) as SocialPostInput);
+
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid post payload." }, { status: 400 });
+  }
+
+  const body = parsed.data;
 
   const { data, error } = await supabase
     .from("social_posts")

@@ -1,4 +1,4 @@
-import { AccountType, PostCategory, PostStatus, SocialPlatform } from "@/lib/types";
+import { AccountType, PostCategory, PostSort, PostStatus, SocialPlatform } from "@/lib/types";
 
 export const accountTypeOptions: AccountType[] = ["personal", "business"];
 
@@ -25,4 +25,12 @@ export const categoryOptions: PostCategory[] = [
   "portfolio",
   "community",
   "announcement",
+];
+
+export const sortOptions: { label: string; value: PostSort }[] = [
+  { label: "Newest first", value: "date-desc" },
+  { label: "Oldest first", value: "date-asc" },
+  { label: "Recently updated", value: "updated-desc" },
+  { label: "Platform", value: "platform-asc" },
+  { label: "Status", value: "status-asc" },
 ];

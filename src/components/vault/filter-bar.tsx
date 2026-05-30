@@ -1,7 +1,9 @@
 "use client";
 
-import { Search } from "lucide-react";
-import { categoryOptions, platformOptions, statusOptions } from "@/lib/options";
+import { Search, SlidersHorizontal } from "lucide-react";
+import { PlatformIcon } from "@/components/app/platform-icon";
+import { categoryOptions, platformOptions, sortOptions, statusOptions } from "@/lib/options";
+import { SocialPlatform } from "@/lib/types";
 
 export type VaultFilters = {
   search: string;
@@ -11,6 +13,7 @@ export type VaultFilters = {
   status: string;
   campaign: string;
   city: string;
+  sort: string;
 };
 
 export function FilterBar({
@@ -23,8 +26,18 @@ export function FilterBar({
   onClear: () => void;
 }) {
   return (
-    <div className="sticky top-[72px] z-20 rounded-[28px] border border-[var(--line)] bg-white/95 p-4 shadow-[0_14px_34px_rgba(20,39,75,0.08)] backdrop-blur">
+    <div className="sticky top-[76px] z-20 rounded-[28px] border border-[var(--line)] bg-[color:var(--card)]/96 p-4 shadow-[0_14px_34px_var(--shadow)] backdrop-blur">
       <div className="grid gap-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm font-semibold text-[var(--ink)]">
+            <SlidersHorizontal size={16} />
+            Filter and sort
+          </div>
+          <button type="button" onClick={onClear} className="text-sm font-semibold text-[var(--accent)]">
+            Reset
+          </button>
+        </div>
+
         <label className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]" size={16} />
           <input
@@ -35,7 +48,24 @@ export function FilterBar({
           />
         </label>
 
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
+        <div className="flex flex-wrap gap-2">
+          <PlatformPill
+            label="All platforms"
+            active={filters.platform === "All"}
+            onClick={() => onChange({ ...filters, platform: "All" })}
+          />
+          {platformOptions.map((platform) => (
+            <PlatformPill
+              key={platform}
+              platform={platform}
+              label={platform}
+              active={filters.platform === platform}
+              onClick={() => onChange({ ...filters, platform })}
+            />
+          ))}
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-7">
           <Select
             value={filters.platform}
             onChange={(value) => onChange({ ...filters, platform: value })}
@@ -74,15 +104,19 @@ export function FilterBar({
             placeholder="City"
             aria-label="City"
           />
+          <Select
+            value={filters.sort}
+            onChange={(value) => onChange({ ...filters, sort: value })}
+            label="Sort"
+            options={sortOptions.map((option) => option.value)}
+            labels={Object.fromEntries(sortOptions.map((option) => [option.value, option.label]))}
+          />
         </div>
 
         <div className="flex flex-wrap justify-between gap-3 pt-1">
           <p className="text-xs leading-5 text-[var(--muted)]">
             Fast filters for daily posting. Search scans caption text, notes, tags, campaign, city, and media references.
           </p>
-          <button type="button" onClick={onClear} className="text-sm font-semibold text-[var(--pink-deep)]">
-            Clear filters
-          </button>
         </div>
       </div>
     </div>
@@ -94,24 +128,51 @@ function Select({
   value,
   onChange,
   options,
+  labels,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: string[];
+  labels?: Record<string, string>;
 }) {
   return (
     <label className="space-y-1">
-      <span className="px-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-        {label}
-      </span>
+      <span className="vault-grid-label">{label}</span>
       <select className="vault-input" value={value} onChange={(event) => onChange(event.target.value)}>
         {options.map((option) => (
           <option key={option} value={option}>
-            {option}
+            {labels?.[option] || option}
           </option>
         ))}
       </select>
     </label>
+  );
+}
+
+function PlatformPill({
+  platform,
+  label,
+  active,
+  onClick,
+}: {
+  platform?: SocialPlatform;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold transition ${
+        active
+          ? "border-transparent bg-[var(--accent)] text-white"
+          : "border-[var(--line)] bg-[var(--surface)] text-[var(--soft-ink)]"
+      }`}
+    >
+      {platform ? <PlatformIcon platform={platform} size={14} /> : null}
+      <span>{label}</span>
+    </button>
   );
 }

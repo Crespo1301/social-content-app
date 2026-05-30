@@ -2,6 +2,8 @@ export type AccountType = "personal" | "business";
 
 export type PostStatus = "drafted" | "posted" | "reposted" | "archived";
 
+export type ThemePreference = "light" | "dark";
+
 export type SocialPlatform =
   | "Instagram"
   | "Facebook"
@@ -44,3 +46,24 @@ export type SocialPost = {
 export type SocialPostInput = Omit<SocialPost, "id" | "createdAt" | "updatedAt">;
 
 export type VaultMode = "demo" | "supabase";
+
+export type PostSort =
+  | "date-desc"
+  | "date-asc"
+  | "updated-desc"
+  | "platform-asc"
+  | "status-asc";
+
+export type UserProfile = {
+  id: string;
+  email?: string;
+  displayName: string;
+  avatarUrl: string;
+  bio: string;
+  defaultCity: string;
+  defaultAccountType: AccountType;
+  defaultTheme: ThemePreference;
+  onboardingComplete: boolean;
+};
+
+export type UserProfileInput = Omit<UserProfile, "id" | "email">;

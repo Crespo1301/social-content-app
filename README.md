@@ -28,9 +28,13 @@ Primary workflow:
 
 The app currently supports:
 
-- a polished mobile-first vault UI
+- mobile-first Social Vault shell with welcome state, top navigation, and tutorial guidance
 - demo mode with local device persistence when Supabase env is missing
-- Supabase-ready mode with magic-link auth and CRUD endpoints
+- Supabase-backed private mode with magic-link auth, profile editing, and protected CRUD endpoints
+- dark and light theme support
+- platform filters with icon-based quick picks and sorting
+- profile customization for display name, avatar URL, bio, default city, and default account type
+- legal pages for privacy, terms, and cookies
 - starter seeded example posts
 
 ## Local Development
@@ -66,9 +70,11 @@ Without those, the app runs in **demo mode** with local sample-post persistence 
 
 - `src/app/vault/page.tsx` - protected/main vault entry
 - `src/components/vault/` - cards, filters, composer dialog, copy flow
+- `src/components/app/` - top nav, theme, avatar, cookies, footer
 - `src/lib/sample-posts.ts` - starter seed examples for demo mode
 - `src/lib/types.ts` - main app data model
 - `src/app/api/posts/` - Supabase CRUD endpoints
+- `src/app/api/profile/route.ts` - profile persistence endpoint
 - `supabase/schema.sql` - canonical table + RLS schema
 - `supabase/seed.sql` - starter SQL seed for real Supabase projects
 

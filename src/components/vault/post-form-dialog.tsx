@@ -10,6 +10,8 @@ type PostFormDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   onSave: (input: SocialPostInput, id?: string) => Promise<void>;
+  defaultCity?: string;
+  defaultAccountType?: SocialPostInput["accountType"];
 };
 
 export function PostFormDialog({
@@ -17,6 +19,8 @@ export function PostFormDialog({
   isOpen,
   onClose,
   onSave,
+  defaultCity,
+  defaultAccountType,
 }: PostFormDialogProps) {
   if (!isOpen) {
     return null;
@@ -39,12 +43,12 @@ export function PostFormDialog({
       }
     : {
         date: new Date().toISOString().slice(0, 10),
-        accountType: "business",
+        accountType: defaultAccountType || "business",
         platform: "Instagram",
         status: "drafted",
         category: "promotion",
         campaign: "",
-        city: "",
+        city: defaultCity || "",
         mediaReferences: [],
         crossPostedTo: [],
         tags: [],
@@ -74,8 +78,8 @@ export function PostFormDialog({
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-[2px]">
       <div className="mx-auto flex min-h-full w-full max-w-3xl items-end justify-center px-4 py-4 sm:items-center sm:px-6 lg:px-8">
-        <div className="max-h-[92vh] w-full overflow-auto rounded-[28px] bg-white shadow-[0_28px_80px_rgba(19,38,74,0.24)]">
-          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[var(--line)] bg-white px-5 py-4 sm:px-6">
+        <div className="max-h-[92vh] w-full overflow-auto rounded-[28px] bg-[var(--card)] shadow-[0_28px_80px_var(--shadow)]">
+          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[var(--line)] bg-[var(--card)] px-5 py-4 sm:px-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
                 {draft ? "Edit caption" : "New caption"}

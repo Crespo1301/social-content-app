@@ -1,6 +1,7 @@
 "use client";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Files, Pencil, Trash2 } from "lucide-react";
+import { PlatformIcon } from "@/components/app/platform-icon";
 import { CopyButton } from "@/components/vault/copy-button";
 import { SocialPost } from "@/lib/types";
 import { clipText, formatDateLabel } from "@/lib/utils";
@@ -17,7 +18,10 @@ export function PostCard({
   return (
     <article className="vault-card">
       <div className="flex flex-wrap items-center gap-2">
-        <Pill tone="blue">{post.platform}</Pill>
+        <Pill tone="blue">
+          <PlatformIcon platform={post.platform} size={14} />
+          <span>{post.platform}</span>
+        </Pill>
         <Pill tone={post.accountType === "business" ? "pink" : "neutral"}>
           {post.accountType}
         </Pill>
@@ -69,6 +73,12 @@ export function PostCard({
 
       <div className="flex flex-wrap gap-3 pt-1">
         <CopyButton text={post.caption} />
+        <CopyButton
+          text={post.tags.map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)).join(" ")}
+          label="Copy hashtags"
+          icon={<Files size={16} />}
+          tone="default"
+        />
         <button type="button" onClick={() => onEdit(post)} className="vault-action">
           <Pencil size={16} />
           <span>Edit</span>
@@ -91,13 +101,13 @@ function Pill({
 }) {
   const className =
     tone === "blue"
-      ? "bg-[var(--blue-soft)]/35 text-[var(--ink)]"
+      ? "bg-[var(--accent-soft)] text-[var(--ink)]"
       : tone === "pink"
-        ? "bg-[var(--pink-soft)] text-[var(--pink-deep)]"
+        ? "bg-[var(--pink-soft)] text-[var(--pink-strong)]"
         : "bg-[var(--surface-strong)] text-[var(--soft-ink)]";
 
   return (
-    <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${className}`}>
+    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold capitalize ${className}`}>
       {children}
     </span>
   );

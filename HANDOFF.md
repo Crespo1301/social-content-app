@@ -1,20 +1,21 @@
 # HANDOFF.md
 
-## Current State (v0.1.0 - 2026-05-29)
+## Current State (v0.2.0 - 2026-05-30)
 
-The repo started empty and now has a first working Social Vault scaffold. This `v0.1.0`
-release is the first usable product baseline.
+The repo has moved past the initial scaffold into a more complete private product shell. This
+`v0.2.0` release adds the app framing needed to use Social Vault like a real internal tool.
 
 Current implementation includes:
 
-- Next.js 16 app scaffolded cleanly
-- mobile-first vault UI
+- protected login flow with better onboarding and sign-out path
+- top navigation, welcome shell, and tutorial surface
 - demo mode with local browser persistence
 - Supabase-ready mode with auth callback flow and CRUD API routes
-- seeded example posts
-- modal create/edit flow
-- one-tap copy button
-- filter/search card library
+- profile model and profile editing path
+- dark/light theme support
+- legal pages and cookie notice
+- platform-aware filtering, sorting, and icon treatment
+- seeded example posts and modal create/edit flow
 - repo-local AI skills and MCP script setup
 
 ## MVP Status
@@ -31,18 +32,19 @@ Implemented:
 
 Still needed / next:
 
-1. wire a real Supabase project and test private auth end to end
-2. run `supabase/schema.sql` and `supabase/seed.sql`
-3. validate the protected route behavior in deployed mode
-4. refine filtering UX with real usage
-5. consider separate hashtag-copy and full-package-copy flows
+1. wire a real Supabase project and test private auth/profile flow end to end
+2. run the updated `supabase/schema.sql` before relying on profile editing
+3. validate remote avatar URLs and live auth cookies in deployed mode
+4. consider team/member roles if this expands beyond single-user internal use
+5. add richer content packaging views if daily workflow needs them
 
 ## Important Architecture Notes
 
 - `src/components/vault/vault-app.tsx` is the main operator experience
 - demo mode is intentional, not accidental
-- production persistence should flow through `social_posts`
+- production persistence should flow through `social_posts` and `profiles`
 - `middleware.ts` only matters when Supabase env exists
+- theme state is driven from the client provider and can be persisted through profile defaults
 
 ## Files To Read First
 

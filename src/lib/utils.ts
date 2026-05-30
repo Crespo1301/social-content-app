@@ -26,3 +26,19 @@ export function formatDateLabel(value: string) {
     year: "numeric",
   }).format(date);
 }
+
+export function getInitials(value: string) {
+  return value
+    .split(" ")
+    .map((part) => part.trim()[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
+export function slugLabel(value: string) {
+  return value
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
