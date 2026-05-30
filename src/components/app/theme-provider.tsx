@@ -10,6 +10,8 @@ import { ThemePreference } from "@/lib/types";
 
 type ThemeContextValue = {
   theme: ThemePreference;
+  /** False during SSR + first client render; true after mount. Gate theme-dependent UI on this to avoid hydration mismatches. */
+  mounted: boolean;
   setTheme: (theme: ThemePreference) => void;
   toggleTheme: () => void;
 };
@@ -23,9 +25,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       return "light";
     }
 
+    // The no-flash layout script already resolved the theme onto <html data-theme>.
+    const applied = document.documentElement.dataset.theme as ThemePreference | undefined;
+    if (applied === "dark" || applied === "light") {
+      return applied;
+    }
+
     const saved = window.localStorage.getItem(storageKey) as ThemePreference | null;
     return saved === "dark" || saved === "light" ? saved : "light";
   });
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Standard hydration gate: flip to mounted after first client render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -42,7 +58,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(theme === "light" ? "dark" : "light");
   }
 
-  const value = { theme, setTheme, toggleTheme };
+  const value = { theme, mounted, setTheme, toggleTheme };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

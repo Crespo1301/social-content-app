@@ -4,6 +4,28 @@ All notable changes to this project should be documented in this file.
 
 ## [Unreleased]
 
+### 0.3.0 — iOS-native redesign + CSolutions branding (Claude, branch `redesign-ios-v1`)
+
+Ground-up redesign for ease of use, built and verified in **demo mode** (no backend cost incurred). Supersedes the interim refinement pass. Intended as the basis for Codex's **v1.0.0** public launch once Supabase is wired (see HANDOFF "Supabase upgrade & wiring guide").
+
+**Information architecture**
+- Replaced the single confusing scroll-everything page with an iOS-native **tabbed app shell**: bottom tab bar (Library · center Add · Profile) on mobile, inline top tabs on desktop, sticky compact header.
+- New **Library** view (large title, summary line, search-first sticky filter bar, result count, distinct empty states), **Profile** view (grouped iOS settings: Identity / Posting defaults / Preferences + help steps + legal links + sign-out).
+- Create/edit now opens a **full-screen composer sheet** (caption-first, scroll-locked, focus-managed, slide-up, safe-area aware). Filters/sort open in a **bottom sheet**.
+
+**Branding (CSolutions)**
+- Real CSolutions logo (`public/CSolutions-Logo.png`) via `BrandMark`, replacing the decorative "sparkle" glyph.
+- Retuned the entire token system to CSolutions **ocean-blue** (`#2699c2`) + iOS-native neutral surfaces, light & dark. Flat brand buttons (removed the blue→pink gradient). **Inter** font. PWA theme-color + apple-web-app meta.
+- **All icons are concrete/meaningful** — removed every `Sparkles`/`WandSparkles` (no "AI diamonds" or floating orbs), per client direction.
+
+**Full login (UI scaffolded; provider config deferred to Codex)**
+- Redesigned login: email + password (sign in / create account toggle), magic link, **Google** and **Apple** OAuth buttons. Auth callback now redirects to `/login?error=` on failed/expired code instead of dropping users on `/vault`.
+
+**Correctness / quality**
+- Fixed a **theme-toggle hydration mismatch** (mount-gated icon + `mounted` flag in the theme provider) and demo-mode SSR/localStorage mismatch (state seeds from server, hydrates after mount).
+- Moved component classes into `@layer components` so Tailwind utility overrides (`pl-`, `px-`, `h-`/`w-`) work — fixes input icon/placeholder overlap app-wide.
+- Demo mode, posts/profile CRUD, and the Supabase API/RLS path are unchanged. Lint + `next build` clean; verified via Playwright at 390/1280/1920 in light & dark, 0 hydration errors.
+
 ## [0.2.2] - 2026-05-30
 
 - added a committed `vercel.json` with `framework: nextjs` so Vercel no longer treats the project as a generic "Other" app

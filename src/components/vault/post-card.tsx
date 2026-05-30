@@ -1,6 +1,6 @@
 "use client";
 
-import { Files, Pencil, Trash2 } from "lucide-react";
+import { Hash, Pencil, Trash2 } from "lucide-react";
 import { PlatformIcon } from "@/components/app/platform-icon";
 import { CopyButton } from "@/components/vault/copy-button";
 import { SocialPost } from "@/lib/types";
@@ -15,77 +15,85 @@ export function PostCard({
   onEdit: (post: SocialPost) => void;
   onDelete: (post: SocialPost) => void;
 }) {
+  const hashtags = post.tags.map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)).join(" ");
+
   return (
-    <article className="vault-card">
-      <div className="flex flex-wrap items-center gap-2">
-        <Pill tone="blue">
-          <PlatformIcon platform={post.platform} size={14} />
-          <span>{post.platform}</span>
-        </Pill>
-        <Pill tone={post.accountType === "business" ? "pink" : "neutral"}>
-          {post.accountType}
-        </Pill>
-        <Pill tone="neutral">{post.status}</Pill>
+    <article className="vault-card transition-transform duration-200 motion-reduce:transition-none md:hover:-translate-y-0.5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Pill tone="accent">
+            <PlatformIcon platform={post.platform} size={13} />
+            <span>{post.platform}</span>
+          </Pill>
+          <Pill tone={post.accountType === "business" ? "teal" : "neutral"}>{post.accountType}</Pill>
+          <Pill tone="neutral">{post.status}</Pill>
+        </div>
+        <span className="shrink-0 text-xs font-medium text-[var(--muted)]">
+          {formatDateLabel(post.date)}
+        </span>
       </div>
 
-      <div className="space-y-2">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-              {formatDateLabel(post.date)}
-            </p>
-            <h3 className="mt-2 text-lg font-semibold text-[var(--ink)]">
-              {post.campaign || "Untitled campaign"}
-            </h3>
-          </div>
-          <span className="rounded-full bg-[var(--surface-strong)] px-3 py-1 text-xs font-medium text-[var(--soft-ink)]">
-            {post.city || "No city"}
-          </span>
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-base font-bold text-[var(--ink)]">
+            {post.campaign || "Untitled campaign"}
+          </h3>
+          {post.city ? (
+            <span className="shrink-0 rounded-full bg-[var(--surface)] px-2.5 py-0.5 text-xs font-medium text-[var(--soft-ink)]">
+              {post.city}
+            </span>
+          ) : null}
         </div>
         <p className="text-sm leading-6 text-[var(--soft-ink)]">{clipText(post.caption, 220)}</p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <TagList title="Category" items={[post.category]} />
-        <TagList title="Tags" items={post.tags} />
-        <TagList title="Cross-posted" items={post.crossPostedTo} />
-      </div>
-
-      {post.mediaReferences.length > 0 ? (
-        <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-            Media references
-          </p>
-          <p className="mt-2 text-sm leading-6 text-[var(--soft-ink)]">
-            {post.mediaReferences.join(", ")}
-          </p>
+      {post.tags.length > 0 ? (
+        <div className="flex flex-wrap gap-1.5">
+          {post.tags.slice(0, 6).map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-[var(--surface)] px-2.5 py-0.5 text-xs text-[var(--soft-ink)]"
+            >
+              {tag.startsWith("#") ? tag : `#${tag}`}
+            </span>
+          ))}
+          {post.tags.length > 6 ? (
+            <span className="px-1 text-xs text-[var(--muted)]">+{post.tags.length - 6}</span>
+          ) : null}
         </div>
       ) : null}
 
       {post.notes ? (
-        <div className="rounded-2xl border border-[var(--line)] bg-white px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-            Notes
-          </p>
-          <p className="mt-2 text-sm leading-6 text-[var(--soft-ink)]">{post.notes}</p>
-        </div>
+        <p className="rounded-2xl bg-[var(--surface)] px-3.5 py-2.5 text-sm leading-6 text-[var(--soft-ink)]">
+          {post.notes}
+        </p>
       ) : null}
 
-      <div className="flex flex-wrap gap-3 pt-1">
-        <CopyButton text={post.caption} />
-        <CopyButton
-          text={post.tags.map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)).join(" ")}
-          label="Copy hashtags"
-          icon={<Files size={16} />}
-          tone="default"
-        />
-        <button type="button" onClick={() => onEdit(post)} className="vault-action">
+      <div className="flex items-center gap-2 border-t border-[var(--line)] pt-3">
+        <CopyButton text={post.caption} className="flex-1" />
+        {post.tags.length > 0 ? (
+          <CopyButton
+            text={hashtags}
+            label="Tags"
+            icon={<Hash size={16} />}
+            tone="default"
+          />
+        ) : null}
+        <button
+          type="button"
+          onClick={() => onEdit(post)}
+          aria-label="Edit post"
+          className="vault-icon-button h-10 w-10"
+        >
           <Pencil size={16} />
-          <span>Edit</span>
         </button>
-        <button type="button" onClick={() => onDelete(post)} className="vault-action">
+        <button
+          type="button"
+          onClick={() => onDelete(post)}
+          aria-label="Delete post"
+          className="vault-icon-button vault-action-danger h-10 w-10"
+        >
           <Trash2 size={16} />
-          <span>Delete</span>
         </button>
       </div>
     </article>
@@ -97,42 +105,18 @@ function Pill({
   tone,
 }: {
   children: React.ReactNode;
-  tone: "blue" | "pink" | "neutral";
+  tone: "accent" | "teal" | "neutral";
 }) {
   const className =
-    tone === "blue"
-      ? "bg-[var(--accent-soft)] text-[var(--ink)]"
-      : tone === "pink"
+    tone === "accent"
+      ? "bg-[var(--accent-soft)] text-[var(--accent-ink)]"
+      : tone === "teal"
         ? "bg-[var(--pink-soft)] text-[var(--pink-strong)]"
-        : "bg-[var(--surface-strong)] text-[var(--soft-ink)]";
+        : "bg-[var(--surface)] text-[var(--soft-ink)]";
 
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold capitalize ${className}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${className}`}>
       {children}
     </span>
-  );
-}
-
-function TagList({ title, items }: { title: string; items: string[] }) {
-  if (items.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="space-y-2">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-        {title}
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {items.map((item) => (
-          <span
-            key={`${title}-${item}`}
-            className="rounded-full border border-[var(--line)] bg-white px-3 py-1 text-xs text-[var(--soft-ink)]"
-          >
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
   );
 }

@@ -1,43 +1,64 @@
 @import "tailwindcss";
 
+/*
+  Social Vault — iOS-native design system on CSolutions ocean-blue brand.
+  Brand: #2699c2 (ocean blue), Inter type, grouped neutral surfaces.
+  The CSS custom-property names are stable so all components inherit the brand.
+*/
+
 :root {
-  --background: #f4f7fb;
-  --surface: #edf3fa;
-  --surface-strong: #dbe7f4;
-  --card: rgba(255, 255, 255, 0.94);
-  --ink: #10223f;
-  --soft-ink: #4c617c;
-  --muted: #7c8ea7;
-  --line: #d6e0ec;
-  --accent: #2563eb;
-  --accent-soft: #d7e6ff;
-  --accent-strong: #2563eb;
-  --accent-shadow: rgba(37, 99, 235, 0.24);
-  --pink-soft: #ffe0f0;
-  --pink-strong: #d84d95;
+  --background: #eef2f7;
+  --surface: #e6edf4;
+  --surface-strong: #d9e3ee;
+  --card: #ffffff;
+  --ink: #0e1f2d;
+  --soft-ink: #50647a;
+  --muted: #8093a8;
+  --line: #e2e8f1;
+  --line-strong: #cfd9e6;
+  --accent: #2699c2;
+  --accent-soft: #d8eef6;
+  --accent-strong: #1f88ad;
+  --accent-ink: #155874;
+  --accent-shadow: rgba(38, 153, 194, 0.24);
+  --on-accent: #ffffff;
+  /* Account-type accent (business) — a warm teal that complements ocean blue. */
+  --pink-soft: #e2eef2;
+  --pink-strong: #2f7f97;
   --success: #1f8a61;
+  --success-soft: #d6f0e4;
   --warning: #b9771f;
-  --shadow: rgba(16, 34, 63, 0.1);
+  --danger: #d2434f;
+  --shadow: rgba(15, 31, 46, 0.08);
+  --shadow-strong: rgba(15, 31, 46, 0.14);
+  /* Height of the sticky app header; used to offset sticky regions. */
+  --nav-height: 3.5rem;
 }
 
 html[data-theme="dark"] {
-  --background: #09111f;
-  --surface: #101c2f;
-  --surface-strong: #1a2940;
-  --card: rgba(15, 24, 40, 0.94);
-  --ink: #edf4ff;
-  --soft-ink: #b9c8df;
-  --muted: #8ca0bd;
-  --line: #22314a;
-  --accent: #73a6ff;
-  --accent-soft: rgba(115, 166, 255, 0.15);
-  --accent-strong: #4f8cff;
-  --accent-shadow: rgba(79, 140, 255, 0.18);
-  --pink-soft: rgba(216, 77, 149, 0.16);
-  --pink-strong: #f28abc;
+  --background: #0a0f15;
+  --surface: #141c25;
+  --surface-strong: #1e2935;
+  --card: #121a23;
+  --ink: #eef4fb;
+  --soft-ink: #aebccd;
+  --muted: #7d90a4;
+  --line: #233040;
+  --line-strong: #2d3c4e;
+  --accent: #45b6dc;
+  --accent-soft: rgba(69, 182, 220, 0.16);
+  --accent-strong: #2699c2;
+  --accent-ink: #9bd6ec;
+  --accent-shadow: rgba(69, 182, 220, 0.2);
+  --on-accent: #03161e;
+  --pink-soft: rgba(69, 182, 220, 0.12);
+  --pink-strong: #7fc6e0;
   --success: #4dd39b;
+  --success-soft: rgba(77, 211, 155, 0.14);
   --warning: #f6b85a;
-  --shadow: rgba(0, 0, 0, 0.28);
+  --danger: #f3697a;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-strong: rgba(0, 0, 0, 0.55);
 }
 
 * {
@@ -47,17 +68,17 @@ html[data-theme="dark"] {
 html {
   background: var(--background);
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28%),
-    radial-gradient(circle at top right, color-mix(in srgb, var(--pink-strong) 14%, transparent), transparent 26%),
-    var(--background);
+  background: var(--background);
   color: var(--ink);
-  font-family: var(--font-manrope), sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -73,66 +94,133 @@ textarea {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 22%, white);
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+@layer components {
+/* iOS-native large title */
+.ios-title {
+  font-size: clamp(1.75rem, 6vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.ios-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--soft-ink);
+}
+
+/* Section eyebrow */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .vault-card {
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
   border: 1px solid var(--line);
-  border-radius: 1.75rem;
+  border-radius: 1.5rem;
   background: var(--card);
-  padding: 1.25rem;
-  box-shadow: 0 16px 38px var(--shadow);
+  padding: 1.15rem;
+  box-shadow: 0 1px 2px var(--shadow), 0 12px 30px color-mix(in srgb, var(--shadow) 60%, transparent);
 }
 
 .vault-input {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 1rem;
-  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border-radius: 0.85rem;
+  background: var(--card);
   color: var(--ink);
-  min-height: 2.9rem;
-  padding: 0.78rem 0.95rem;
+  min-height: 2.95rem;
+  padding: 0.72rem 0.95rem;
   outline: none;
   transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease;
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.vault-input::placeholder {
+  color: var(--muted);
 }
 
 .vault-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
 }
 
+.vault-grid-label {
+  padding-inline: 0.15rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Buttons — flat brand, no decorative gradients */
 .vault-action {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  justify-content: center;
+  gap: 0.5rem;
   border-radius: 999px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--card) 92%, transparent);
-  padding: 0.72rem 1rem;
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+  padding: 0.7rem 1.05rem;
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: 650;
   color: var(--ink);
+  cursor: pointer;
   transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    border-color 160ms ease;
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    border-color 140ms ease,
+    background-color 140ms ease;
 }
 
-.vault-action:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 22px var(--shadow);
+.vault-action:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .vault-action:hover {
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
 }
 
 .vault-action-primary {
   border-color: transparent;
-  background: linear-gradient(135deg, var(--accent-strong), var(--pink-strong));
-  color: white;
-  box-shadow: 0 14px 28px color-mix(in srgb, var(--accent-shadow) 60%, rgba(216, 77, 149, 0.18));
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 8px 22px var(--accent-shadow);
+}
+
+@media (hover: hover) {
+  .vault-action-primary:hover {
+    background: var(--accent-strong);
+    border-color: transparent;
+    color: var(--on-accent);
+  }
+}
+
+.vault-action-danger {
+  color: var(--danger);
+}
+
+@media (hover: hover) {
+  .vault-action-danger:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+  }
 }
 
 .vault-icon-button {
@@ -141,17 +229,72 @@ textarea {
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--card) 92%, transparent);
+  background: var(--card);
   color: var(--ink);
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
 }
 
-.vault-grid-label {
-  padding-inline: 0.25rem;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
+@media (hover: hover) {
+  .vault-icon-button:hover {
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+}
+
+/* Segmented / pill controls */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--soft-ink);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.chip[data-active="true"] {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Full-screen / bottom sheet container used for composer + filters */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: color-mix(in srgb, #0a0f15 45%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.sheet-panel {
+  background: var(--card);
+  box-shadow: 0 -8px 40px var(--shadow-strong);
+}
+}
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Safe-area helpers for iOS notches / home indicator */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
 }
