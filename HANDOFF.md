@@ -1,9 +1,9 @@
 # HANDOFF.md
 
-## Current State (v0.2.1 - 2026-05-30)
+## Current State (v0.2.2 - 2026-05-30)
 
 The repo has moved past the initial scaffold into a more complete private product shell. This
-`v0.2.1` patch keeps the `v0.2.0` product work intact and fixes the Vercel deployment blocker in middleware.
+`v0.2.2` patch keeps the `v0.2.0` and `v0.2.1` work intact and locks the Vercel framework preset into source control.
 
 Current implementation includes:
 
@@ -18,6 +18,7 @@ Current implementation includes:
 - seeded example posts and modal create/edit flow
 - repo-local AI skills and MCP script setup
 - edge-safe middleware that no longer depends on local alias imports for session refresh during deploy
+- committed `vercel.json` declaring the project as `nextjs`, so Vercel does not fall back to the "Other" preset
 
 ## MVP Status
 

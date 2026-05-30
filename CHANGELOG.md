@@ -4,6 +4,11 @@ All notable changes to this project should be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-05-30
+
+- added a committed `vercel.json` with `framework: nextjs` so Vercel no longer treats the project as a generic "Other" app
+- locked the framework fix into the repo to prevent future production 404s caused by project preset drift
+
 ## [0.2.1] - 2026-05-30
 
 - fixed the Vercel deployment blocker by inlining the Supabase session refresh logic directly inside `middleware.ts`
