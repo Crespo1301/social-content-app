@@ -1,0 +1,41 @@
+name: Weekly Maintenance and Security
+
+on:
+  schedule:
+    - cron: "40 16 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CI: "1"
+  NEXT_TELEMETRY_DISABLED: "1"
+  NEXT_PUBLIC_SUPABASE_URL: "https://placeholder.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder"
+
+jobs:
+  weekly-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint project
+        run: npm run lint --if-present
+
+      - name: Build project
+        run: npm run build --if-present
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
