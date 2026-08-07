@@ -4,6 +4,10 @@ All notable changes to this project should be documented in this file.
 
 ## [Unreleased]
 
+### Branch hygiene pass (Claude, 2026-08-07, branch `redesign-ios-v1`)
+
+Reviewed and reverted stray tooling drift found in the working tree (`package.json`, `package-lock.json`, `.mcp.example.json`): `animejs` and `shadcn` had been added as dependencies but are unused anywhere in `src/` (no imports, no `components.json`), and `.mcp.example.json` had picked up BOM/CRLF corruption plus an unused `google-analytics` MCP entry. This is a private, single-user internal tool — none of the three currently serve a real need, so all three were reverted rather than kept. No app code, Supabase auth/RLS path, or demo mode touched. `npm run lint` and `npm run build` verified clean after the revert.
+
 ### 0.3.0 — iOS-native redesign + CSolutions branding (Claude, branch `redesign-ios-v1`)
 
 Ground-up redesign for ease of use, built and verified in **demo mode** (no backend cost incurred). Supersedes the interim refinement pass. Intended as the basis for Codex's **v1.0.0** public launch once Supabase is wired (see HANDOFF "Supabase upgrade & wiring guide").

@@ -1,5 +1,15 @@
 # HANDOFF.md
 
+## Branch hygiene pass — branch `redesign-ios-v1` (Claude, 2026-08-07)
+
+**Status:** clean, no launch decision made, no paid resources created.
+
+The branch had dirty tooling drift in `package.json` / `package-lock.json` (unused `animejs` + `shadcn` deps — zero references in `src/`, no `components.json`) and `.mcp.example.json` (BOM/CRLF corruption + an unconfigured `google-analytics` MCP entry). None of it served this repo's current scope (private single-user caption vault), so all three were reverted. Working tree now matches `origin/redesign-ios-v1` exactly. `npm run lint` and `npm run build` both pass clean.
+
+**Supabase launch path:** unchanged from the note below — `supabase/schema.sql` RLS policies verified intact (all four CRUD policies still scoped to `auth.uid()`), demo mode still the default. The only real blocker to v1.0.0 is still the decision in step 4 below: pay for a dedicated Supabase Pro project vs. reuse the shared `CSolutions` project. No Supabase resources were created or modified this pass — this was a review-only pass per explicit instruction.
+
+---
+
 ## iOS-Native Redesign — branch `redesign-ios-v1` (Claude, 2026-05-30)
 
 **Status:** built + verified in **demo mode**, pushed to `redesign-ios-v1` with a PR open. **NOT** merged or deployed to production. This is the basis for Codex's **v1.0.0 public launch**. No Supabase project was created and no cost was incurred (user paused on the $25/mo Pro upgrade). Lint + `next build` pass; Playwright-verified at 390/1280/1920 in light & dark with 0 hydration errors.
