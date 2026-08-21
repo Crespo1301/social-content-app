@@ -1,5 +1,17 @@
 # HANDOFF.md
 
+## Dependency audit cleanup — branch `redesign-ios-v1` (Codex review, 2026-08-21)
+
+**Status:** clean, no app code changes, no Supabase resources touched.
+
+Commit `001d9ce` resolved the production dependency audit warning that the
+weekly web-app audit found in this branch. The fix was limited to
+`package-lock.json`, updating transitive dependency resolutions including
+`nanoid` from `3.3.16` to `3.3.18` plus related dev-tooling packages
+(`brace-expansion`, `js-yaml`). Codex reran `npm audit --omit=dev
+--audit-level=high` and `npm run lint` on 2026-08-21; both are clean. No UI,
+API, Supabase auth/RLS, demo mode, or launch posture changed.
+
 ## Branch hygiene pass — branch `redesign-ios-v1` (Claude, 2026-08-07)
 
 **Status:** clean, no launch decision made, no paid resources created.

@@ -4,6 +4,10 @@ All notable changes to this project should be documented in this file.
 
 ## [Unreleased]
 
+### Security
+
+- Reviewed commit `001d9ce` from the audit follow-up lane: production dependency audit is clean again after a `package-lock.json`-only transitive update, including `nanoid` `3.3.16` → `3.3.18`. No app code, Supabase auth/RLS, demo mode, or launch posture changed.
+
 ### Branch hygiene pass (Claude, 2026-08-07, branch `redesign-ios-v1`)
 
 Reviewed and reverted stray tooling drift found in the working tree (`package.json`, `package-lock.json`, `.mcp.example.json`): `animejs` and `shadcn` had been added as dependencies but are unused anywhere in `src/` (no imports, no `components.json`), and `.mcp.example.json` had picked up BOM/CRLF corruption plus an unused `google-analytics` MCP entry. This is a private, single-user internal tool — none of the three currently serve a real need, so all three were reverted rather than kept. No app code, Supabase auth/RLS path, or demo mode touched. `npm run lint` and `npm run build` verified clean after the revert.
